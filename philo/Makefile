@@ -1,8 +1,9 @@
-SRCS = ./philo/eat.c \
-				./philo/think.c \
-				./philo/sleep.c \
-				./philo/philo.c \
-				./philo/main.c
+SRCS = ./eat.c \
+				./think.c \
+				./sleep.c \
+				./hilo.c \
+				./utils.c \
+				./main.c
 
 OBJS =	${SRCS:.c=.o}
 
