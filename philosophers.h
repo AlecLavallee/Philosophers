@@ -15,21 +15,26 @@
 
 # include <pthread.h>
 
+typedef struct s_info
+{
+	long		time_to_die;
+	long		time_to_sleep;
+	long		time_to_eat;
+	long long	start_time;
+	pthread_mutex_t	dying;
+	pthread_mutex_t eating;
+}
+
 typedef struct s_philosopher
 {
-	int				thread;
-	int				last_eat;
-	t_philosopher	prev;
-	t_philosopher	next;
+	int		id;
+	long		dining
+	long long	last_dine;
+	t_info		*info;
+	pthread_mutex_t	mutex;
+	pthread		thread;
+	t_philosopher	*prev;
+	t_philosopher	*next;
 }				t_philosopher;
-
-typedef struct s_philo
-{
-	int	time_eat;
-	int	time_sleep;
-	int	time_think;
-	int	must_eat_x;
-
-}				t_philo;
 
 #endif
