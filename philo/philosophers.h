@@ -35,7 +35,7 @@ typedef struct s_philosopher
 	long			dining;
 	long long		last_dine;
 	t_info			*info;
-	pthread_mutex_t		mutex;
+	pthread_mutex_t		fork;
 	pthread_t		thread;
 	t_philosopher		*prev;
 	t_philosopher		*next;
