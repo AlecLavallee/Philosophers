@@ -12,6 +12,14 @@
 
 #include "philosophers.h"
 
+int	print_error(void)
+{
+	write(2, "Error: invalid arguments\n", 25);
+	write(2, "Write: ./philo [philo count] [time die] [time eat]", 49);
+	write(2, " [time sleep] [max eat]\n", 24);
+	exit(1);
+}
+
 int	main(int ac, char **av)
 {
 	t_info	*
