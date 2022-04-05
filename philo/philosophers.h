@@ -13,6 +13,9 @@
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
+# include <unistd.h>
+# include <errno.h>
+# include <sys/time.h>
 # include <pthread.h>
 
 typedef struct s_info
