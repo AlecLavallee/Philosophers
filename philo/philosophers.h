@@ -24,20 +24,21 @@ typedef struct s_info
 	long			time_to_sleep;
 	long			time_to_eat;
 	long long		start_time;
-	pthread_mutex_t	dying;
-	pthread_mutex_t eating;
+	long long		nb_philos;
+	pthread_mutex_t		dying;
+	pthread_mutex_t 	eating;
 }				t_info;
 
 typedef struct s_philosopher
 {
-	int				id;
+	int			id;
 	long			dining;
 	long long		last_dine;
 	t_info			*info;
-	pthread_mutex_t	mutex;
+	pthread_mutex_t		mutex;
 	pthread_t		thread;
-	t_philosopher	*prev;
-	t_philosopher	*next;
+	t_philosopher		*prev;
+	t_philosopher		*next;
 }				t_philosopher;
 
 #endif
