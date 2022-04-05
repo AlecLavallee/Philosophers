@@ -19,19 +19,16 @@ void	ft_putchar(char c)
 
 void	ft_atol(const char *str, long nb)
 {
-	int		i;
-	int		sign;
+	int	i;
+	int	sign;
 	long	nb;
 
 	i = 0;
-	if (str[i] == '-' || str[i] == [+])
-		i++;
 	sign = 1;
 	if (str[i] == '-')
-	{
-		ft_putchar(str[i]);
 		sign = -1;
-	}
+	if (str[i] == '-' || str[i] == '+')
+		i++;
 	while (str[i] >= '0' || str[i] <= '9')
 	{
 		nb = nb * 10 + (str[i] - '0');
