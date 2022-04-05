@@ -12,26 +12,6 @@
 
 #include "philosophers.h"
 
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
-void	ft_atol(long nb)
-{
-	if (nb < 0)
-	{
-		ft_putchar('-');
-		nb *= -1;
-	}
-	if (nb > 10)
-	{
-		ft_putchar(nb % 10 + 48);
-		ft_atol(nb);
-	}
-	else
-		ft_putchar(putchar + 48);
-}
 int	main(int ac, char **av)
 {
 	t_info	*
