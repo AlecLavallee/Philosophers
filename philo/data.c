@@ -7,11 +7,14 @@ int	check_args(int ac, char *av[])
 	i = 0;
 	while (i < argc)
 	{
+		j = 0;
 		while (av[i][j])
 		{
 			if (av[i][j] >= '0' || av[i][j] <= '9')
 				return (-1);
+			j++;
 		}
+		i++;
 	}
 	return (0);
 }
