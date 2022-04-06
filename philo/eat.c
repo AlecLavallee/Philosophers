@@ -6,7 +6,7 @@
 /*   By: alelaval <alelaval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 19:56:01 by alelaval          #+#    #+#             */
-/*   Updated: 2022/03/30 19:57:37 by alelaval         ###   ########.fr       */
+/*   Updated: 2022/04/06 15:31:48 by alelaval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	philo_eat(t_philo *philo)
 	print_status(philo, 0);
 	if (philo->share->nb_philos == 1)
 	{
-		add_sleep(data, data->t_die);
+		add_sleep(share, share->time_to_die);
 		print_status(philo, 4);
 		pthread_mutex_unlock(&philo->fork);
-		data->is_dead = 1;
+		share->is_dead = 1;
 		return ;
 	}
 	pthread_mutex_lock(&philo->prev->fork);
