@@ -12,6 +12,54 @@
 
 #include "philosophers.h"
 
+void	is_dead(t_share *share)
+{
+	int	i;
+
+	while (!share->eat_max)
+	{
+		i = -1;
+		while (!share->is_dead && ++i < share->nb_philos)
+		{
+			pthread_mutex_lock(&share->check);
+			if (get_time() - share->philos[i].last_dine > (size_t)share->time_to_die)
+			{
+				print_status(&share->philos[i], 4);
+				share->is_dead = 1;
+			}
+			pthread_mutex_unlock(&share->check);
+			usleep(100);
+		}
+		if (share->is_dead)
+			break ;
+		i = 0;
+		while (share->nb_eat != -1 && i < share->nb_philos
+			&& share->philos[i].eat_count >= share->nb_eat)
+			i++;
+		if (i == share->nb_philos)
+			share->eat_max = 1;
+	}
+}
+
+void	*philo_process(void *arg)
+{
+	t_philo	*philo;
+	t_share	*share;
+
+	philo = (t_philo *)arg;
+	share = philo->share;
+	if (philo->id % 2 == 0)
+		usleep(1000);
+	while (!share->is_dead && !share->eat_max)
+	{
+		philo_eat(philo);
+		print_status(philo, 2);
+		add_sleep(share, share->time_to_sleep);
+		print_status(philo, 3);
+	}
+	return (NULL);
+}
+
 int	print_error(void)
 {
 	write(2, "Error: invalid arguments\n", 25);
