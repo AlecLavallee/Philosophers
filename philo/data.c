@@ -27,7 +27,7 @@ void	init_share(t_share *share)
 	pthread_mutex_init(&share->check, NULL);
 }
 
-int	init_data(int ac, char *av[], t_share *share)
+int	init_philo(int ac, char *av[], t_share *share)
 {
 	if (check_arg(ac, av))
 		return (1);
