@@ -6,7 +6,7 @@
 /*   By: alelaval <alelaval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 20:22:45 by alelaval          #+#    #+#             */
-/*   Updated: 2022/04/04 20:32:43 by alelaval         ###   ########.fr       */
+/*   Updated: 2022/04/06 16:04:18 by alelaval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	ft_putchar(char c)
 	write(1, &c, 1);
 }
 
-void	ft_atol(const char *str, long nb)
+long	ft_atol(const char *str)
 {
-	int	i;
-	int	sign;
+	int		i;
+	int		sign;
 	long	nb;
 
 	i = 0;
@@ -38,4 +38,5 @@ void	ft_atol(const char *str, long nb)
 			return (0);
 		i++;
 	}
+	return (nb);
 }
