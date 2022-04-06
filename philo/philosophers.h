@@ -18,27 +18,30 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-typedef struct s_info
+typedef struct s_philo
+{
+	int			id;
+	long			dining;
+	long long		last_dine;
+	pthread_mutex_t		fork;
+	struct s_philo		*prev;
+	struct s_philo		*next;
+	struct s_share		*share;
+}				t_philo;
+
+typedef struct s_share
 {
 	long			time_to_die;
 	long			time_to_sleep;
 	long			time_to_eat;
 	long long		start_time;
 	long long		nb_philos;
-	pthread_mutex_t		dying;
-	pthread_mutex_t 	eating;
-}				t_info;
-
-typedef struct s_philosopher
-{
-	int			id;
-	long			dining;
-	long long		last_dine;
-	t_info			*info;
-	pthread_mutex_t		fork;
-	pthread_t		thread;
-	t_philosopher		*prev;
-	t_philosopher		*next;
-}				t_philosopher;
+	long long		eat_max;
+	int			is_deadl
+	size_t			time_init;
+	t_philo			*philos;
+	pthread_mutex_t		print;
+	pthread_mutex_t		check;
+}				t_share;
 
 #endif
