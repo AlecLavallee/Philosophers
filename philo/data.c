@@ -6,24 +6,24 @@
 /*   By: alelaval <alelaval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 15:34:42 by alelaval          #+#    #+#             */
-/*   Updated: 2022/04/06 15:35:41 by alelaval         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:10:25 by alelaval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	check_args(int ac, char *av[])
+int	check_args(int ac, char **av)
 {
 	int	i;
 	int	j;
 
-	i = 0;
+	i = 1;
 	while (i < ac)
 	{
 		j = 0;
 		while (av[i][j])
 		{
-			if (av[i][j] >= '0' || av[i][j] <= '9')
+			if (av[i][j] < '0' || av[i][j] > '9')
 				return (-1);
 			j++;
 		}
@@ -59,9 +59,9 @@ void	init_share(t_share *share)
 	pthread_mutex_init(&share->check, NULL);
 }
 
-int	init_philo(int ac, char *av[], t_share *share)
+int	init_philo(int ac, char **av, t_share *share)
 {
-	if (check_args(ac, av))
+	if (check_args(ac, av) == -1)
 		return (1);
 	share->nb_philos = ft_atol(av[1]);
 	share->time_to_die = ft_atol(av[2]);
