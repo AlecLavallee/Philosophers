@@ -34,9 +34,9 @@ typedef struct s_share
 	long			time_to_die;
 	long			time_to_sleep;
 	long			time_to_eat;
-	long long		nb_philos;
-	long long		nb_eat;
-	long long		eat_max;
+	long			nb_philos;
+	long			nb_eat;
+	long			eat_max;
 	int			is_dead;
 	size_t			time_init;
 	t_philo			*philos;
