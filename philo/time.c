@@ -8,14 +8,14 @@ long long	get_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	add_sleep(t_data *data, size_t t_slp)
+void	add_sleep(t_data *data, size_t time_to_sleep)
 {
 	size_t	t;
 
 	t = get_time();
-	while (!(data->phil_die))
+	while (!(data->is_dead))
 	{
-		if (get_time() - t >= t_slp)
+		if (get_time() - t >= time_to_sleep)
 			break ;
 		usleep(100);
 	}
