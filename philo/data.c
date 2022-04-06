@@ -1,5 +1,21 @@
 #include "philosophers.h"
 
+int	check_args(int ac, char *av[])
+{
+	int i;
+	
+	i = 0;
+	while (i < argc)
+	{
+		while (av[i][j])
+		{
+			if (av[i][j] >= '0' || av[i][j] <= '9')
+				return (-1);
+		}
+	}
+	return (0);
+}
+
 void	init_share(t_share *share)
 {
 	int	i;
@@ -29,7 +45,7 @@ void	init_share(t_share *share)
 
 int	init_philo(int ac, char *av[], t_share *share)
 {
-	if (check_arg(ac, av))
+	if (check_args(ac, av))
 		return (1);
 	share->nb_philos = ft_atol(av[1]);
 	share->time_to_die = ft_atol(av[2]);
