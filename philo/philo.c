@@ -22,9 +22,28 @@ int	print_error(void)
 
 int	main(int ac, char **av)
 {
-	t_info	*
-	if (ac == 5 || ac == 6)
+	int		i;
+	t_share		*share;
+	pthread_t	*t_id;
+	
+	if ((ac == 5 || ac == 6 ) || init_philo(ac, av, &share))
+		return (print_error());
+	t_id = (pthread_t *)malloc(data.n_philos * sizeof(pthread_t));
+	share.time_init = get_time();
+	i = -1;
+	while (++i < share.nb_philos)
 	{
-		check_args()
+		if (pthread_create(&t_id[i], NULL, &philo_process, &share.philos[i]))
+		{
+			write(2, "Error: cannot create thread\n", 28);
+			free(share.philos);
+			free(t_id);
+			return (1);
+		}
+		pthread_mutex_lock(&share.check);
+		share.philos[i].last_dine = share.time_init;
+		pthread_mutex_unlock(&share.check);
 	}
+	is_dead(&share);
+	exit_philo(&share, t_id);
 }
