@@ -1,4 +1,16 @@
-#include "philosphers.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   time.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alelaval <alelaval@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/06 15:33:58 by alelaval          #+#    #+#             */
+/*   Updated: 2022/04/06 15:37:43 by alelaval         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philosophers.h"
 
 long long	get_time(void)
 {
@@ -8,12 +20,12 @@ long long	get_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	add_sleep(t_data *data, size_t time_to_sleep)
+void	add_sleep(t_share *share, size_t time_to_sleep)
 {
 	size_t	time;
 
 	time = get_time();
-	while (!(data->is_dead))
+	while (!(share->is_dead))
 	{
 		if (get_time() - time >= time_to_sleep)
 			break ;
@@ -27,7 +39,7 @@ void	print_status(t_philo *philo, int num)
 
 	time = get_time() - philo->share->time_init;
 	pthread_mutex_lock(&philo->share->print);
-	if (!philo->share->phil_die && !philo->share->eat_max)
+	if (!philo->share->is_dead && !philo->share->eat_max)
 	{
 		printf("%ld", time);
 		printf(" %d ", philo->id);
