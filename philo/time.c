@@ -10,12 +10,12 @@ long long	get_time(void)
 
 void	add_sleep(t_data *data, size_t time_to_sleep)
 {
-	size_t	t;
+	size_t	time;
 
-	t = get_time();
+	time = get_time();
 	while (!(data->is_dead))
 	{
-		if (get_time() - t >= time_to_sleep)
+		if (get_time() - time >= time_to_sleep)
 			break ;
 		usleep(100);
 	}
