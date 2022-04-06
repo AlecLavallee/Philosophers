@@ -8,22 +8,40 @@ long long	get_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	yousleep(int time_to_sleep, t_philo *philo)
+void	add_sleep(t_data *data, size_t t_slp)
 {
-	long long	actual;
-	long long	end;
-	int			die_time;
+	size_t	t;
 
-	actual = get_time();
-	end = get_time() + time_to_sleep;
-	while (actual < end)
+	t = get_time();
+	while (!(data->phil_die))
 	{
-		pthread_mutex_lock(&philo->share->dead_mutex);
-		die_time = philo->share->die_time;
-		pthread_mutex_unlock(&philo->share->dead_mutex);
-		if (die_time == 0)
-			return ;
+		if (get_time() - t >= t_slp)
+			break ;
 		usleep(100);
-		actual = get_time();
 	}
+}
+
+void	print_status(t_philo *philo, int num)
+{
+	size_t	time;
+
+	time = get_time() - philo->share->time_init;
+	pthread_mutex_lock(&philo->share->print);
+	if (!philo->share->phil_die && !philo->share->eat_max)
+	{
+		printf("%ld", time);
+		printf(" %d ", philo->id);
+		if (num == 0)
+			printf("has taken a fork");
+		if (num == 1)
+			printf("is eating");
+		if (num == 2)
+			printf("is sleeping");
+		if (num == 3)
+			printf("is thinking");
+		if (num == 4)
+			printf("died");
+		printf("\n");
+	}
+	pthread_mutex_unlock(&philo->share->print);
 }
