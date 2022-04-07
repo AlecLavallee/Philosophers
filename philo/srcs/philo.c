@@ -6,11 +6,19 @@
 /*   By: alelaval <alelaval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 19:58:12 by alelaval          #+#    #+#             */
-/*   Updated: 2022/04/07 01:24:43 by alelaval         ###   ########.fr       */
+/*   Updated: 2022/04/07 02:27:52 by alelaval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+static void	dead_protect(t_share *share)
+{
+	pthread_mutex_lock(&share->dead);
+	share->is_dead = 1;
+	pthread_mutex_unlock(&share->dead);
+	pthread_mutex_unlock(&share->check);
+}
 
 /*
 ** check if a philosopher is dead
@@ -26,9 +34,9 @@ void	is_dead(t_share *share)
 
 	while (1)
 	{
-		i = 0;
+		i = -1;
 		max = 0;
-		while (!share->is_dead && i < share->nb_philos)
+		while (!share->is_dead && ++i < share->nb_philos)
 		{
 			pthread_mutex_lock(&share->check);
 			if (share->philos[i].dining == share->nb_eat)
@@ -37,15 +45,11 @@ void	is_dead(t_share *share)
 				> (size_t)share->time_to_die)
 			{
 				print_status(&share->philos[i], 4);
-				pthread_mutex_lock(&share->dead);
-				share->is_dead = 1;
-				pthread_mutex_unlock(&share->dead);
-				pthread_mutex_unlock(&share->check);
+				dead_protect(share);
 				return ;
 			}
 			pthread_mutex_unlock(&share->check);
 			usleep(100);
-			i++;
 		}
 		if (share->is_dead == 1 || max == share->nb_philos)
 			return ;
