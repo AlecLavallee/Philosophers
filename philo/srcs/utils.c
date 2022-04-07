@@ -6,7 +6,7 @@
 /*   By: alelaval <alelaval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 20:22:45 by alelaval          #+#    #+#             */
-/*   Updated: 2022/04/06 21:07:08 by alelaval         ###   ########.fr       */
+/*   Updated: 2022/04/07 01:33:36 by alelaval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,24 +47,27 @@ long	ft_atol(const char *str)
 void	print_status(t_philo *philo, int num)
 {
 	size_t	time;
+	int		tmp;
 
 	time = get_time() - philo->share->time_init;
 	pthread_mutex_lock(&philo->share->print);
-	if (!philo->share->is_dead && !philo->share->eat_max)
+	pthread_mutex_lock(&philo->share->dead);
+	tmp = philo->share->is_dead;
+	pthread_mutex_unlock(&philo->share->dead);
+	if (tmp == 0)
 	{
 		printf("%lu", time);
 		printf(" %d ", philo->id);
 		if (num == 0)
-			printf("has taken a fork");
+			printf("has taken a fork\n");
 		if (num == 1)
-			printf("is eating");
+			printf("is eating\n");
 		if (num == 2)
-			printf("is sleeping");
+			printf("is sleeping\n");
 		if (num == 3)
-			printf("is thinking");
+			printf("is thinking\n");
 		if (num == 4)
-			printf("died");
-		printf("\n");
+			printf("died\n");
 	}
 	pthread_mutex_unlock(&philo->share->print);
 }

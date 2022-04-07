@@ -6,7 +6,7 @@
 /*   By: alelaval <alelaval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 19:56:01 by alelaval          #+#    #+#             */
-/*   Updated: 2022/04/06 20:19:42 by alelaval         ###   ########.fr       */
+/*   Updated: 2022/04/07 01:34:52 by alelaval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void	philo_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->prev->fork);
 	print_status(philo, 0);
 	pthread_mutex_lock(&share->check);
-	philo->dining++;
 	print_status(philo, 1);
+	philo->dining++;
 	philo->last_dine = get_time();
 	pthread_mutex_unlock(&share->check);
 	add_sleep(share, share->time_to_eat);
-	pthread_mutex_unlock(&philo->fork);
 	pthread_mutex_unlock(&philo->prev->fork);
+	pthread_mutex_unlock(&philo->fork);
 }

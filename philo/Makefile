@@ -1,9 +1,9 @@
-SRCS = ./philo.c \
-			./utils.c \
-			./close.c \
-			./eat.c \
-			./data.c \
-			./time.c				
+SRCS = ./srcs/philo.c \
+			./srcs/utils.c \
+			./srcs/close.c \
+			./srcs/eat.c \
+			./srcs/data.c \
+			./srcs/time.c				
 
 OBJS =	${SRCS:.c=.o}
 
@@ -16,10 +16,10 @@ RM = 		rm -rf
 all: 		${NAME}
 
 .c.o:
-			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+			${CC} ${CFLAGS} -I include/ -c $< -o ${<:.c=.o}
 
 ${NAME}:	${OBJS}
-			${CC} ${CFLAGS} -o ${NAME} ${OBJS}
+			${CC} ${CFLAGS} -I include/ -o ${NAME} ${OBJS}
 
 clean:
 			${RM} ${OBJS}

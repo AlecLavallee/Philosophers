@@ -6,7 +6,7 @@
 /*   By: alelaval <alelaval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 15:34:42 by alelaval          #+#    #+#             */
-/*   Updated: 2022/04/06 19:10:25 by alelaval         ###   ########.fr       */
+/*   Updated: 2022/04/07 00:46:41 by alelaval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check_args(int ac, char **av)
 		j = 0;
 		while (av[i][j])
 		{
-			if (av[i][j] < '0' || av[i][j] > '9')
+			if (av[i][j] < '0' || av[i][j] > '9' || j >= 9)
 				return (-1);
 			j++;
 		}
@@ -37,7 +37,6 @@ void	init_share(t_share *share)
 	int	i;
 
 	share->is_dead = 0;
-	share->eat_max = 0;
 	share->philos = (t_philo *)malloc(share->nb_philos * sizeof(t_philo));
 	i = -1;
 	while (++i < share->nb_philos)
@@ -57,6 +56,7 @@ void	init_share(t_share *share)
 	}
 	pthread_mutex_init(&share->print, NULL);
 	pthread_mutex_init(&share->check, NULL);
+	pthread_mutex_init(&share->dead, NULL);
 }
 
 int	init_philo(int ac, char **av, t_share *share)
@@ -64,12 +64,22 @@ int	init_philo(int ac, char **av, t_share *share)
 	if (check_args(ac, av) == -1)
 		return (1);
 	share->nb_philos = ft_atol(av[1]);
+	if (share->nb_philos > 300)
+	{
+		printf("Don't put more than 300 philos, please\n");
+		exit(1);
+	}
 	share->time_to_die = ft_atol(av[2]);
 	share->time_to_eat = ft_atol(av[3]);
 	share->time_to_sleep = ft_atol(av[4]);
 	share->nb_eat = -1;
 	if (ac == 6)
 		share->nb_eat = ft_atol(av[5]);
+	if (share->nb_eat == 0)
+	{
+		printf("Must be more than 0 for dining\n");
+		exit(1);
+	}
 	init_share(share);
 	return (0);
 }

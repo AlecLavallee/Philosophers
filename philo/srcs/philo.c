@@ -6,7 +6,7 @@
 /*   By: alelaval <alelaval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 19:58:12 by alelaval          #+#    #+#             */
-/*   Updated: 2022/04/06 21:06:45 by alelaval         ###   ########.fr       */
+/*   Updated: 2022/04/07 01:24:43 by alelaval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,31 +22,33 @@
 void	is_dead(t_share *share)
 {
 	int	i;
+	int	max;
 
-	while (!share->eat_max)
+	while (1)
 	{
 		i = 0;
-
+		max = 0;
 		while (!share->is_dead && i < share->nb_philos)
 		{
 			pthread_mutex_lock(&share->check);
-			if (get_time() - share->philos[i].last_dine > (size_t)share->time_to_die)
+			if (share->philos[i].dining == share->nb_eat)
+				max++;
+			else if (get_time() - share->philos[i].last_dine
+				> (size_t)share->time_to_die)
 			{
 				print_status(&share->philos[i], 4);
+				pthread_mutex_lock(&share->dead);
 				share->is_dead = 1;
+				pthread_mutex_unlock(&share->dead);
+				pthread_mutex_unlock(&share->check);
+				return ;
 			}
 			pthread_mutex_unlock(&share->check);
 			usleep(100);
 			i++;
 		}
-		if (share->is_dead)
-			break ;
-		i = 0;
-		while (share->nb_eat != -1 && i < share->nb_philos
-			&& share->philos[i].dining >= share->nb_eat)
-			i++;
-		if (i == share->nb_philos)
-			share->eat_max = 1;
+		if (share->is_dead == 1 || max == share->nb_philos)
+			return ;
 	}
 }
 
@@ -64,13 +66,22 @@ void	*philo_process(void *arg)
 	philo = (t_philo *)arg;
 	share = philo->share;
 	if (philo->id % 2 == 0)
-		usleep(1000);
-	while (!share->is_dead && !share->eat_max)
+		usleep(100);
+	while (1)
 	{
 		philo_eat(philo);
+		if (philo->dining == share->nb_eat)
+			return (NULL);
 		print_status(philo, 2);
 		add_sleep(share, share->time_to_sleep);
 		print_status(philo, 3);
+		pthread_mutex_lock(&share->dead);
+		if (share->is_dead == 1)
+		{
+			pthread_mutex_unlock(&share->dead);
+			return (NULL);
+		}
+		pthread_mutex_unlock(&share->dead);
 	}
 	return (NULL);
 }
@@ -96,6 +107,7 @@ int	main(int ac, char **av)
 	i = -1;
 	while (++i < share.nb_philos)
 	{
+		share.philos[i].last_dine = share.time_init;
 		if (pthread_create(&t_id[i], NULL, &philo_process, &share.philos[i]))
 		{
 			write(2, "Error: cannot create thread\n", 28);
@@ -103,9 +115,6 @@ int	main(int ac, char **av)
 			free(t_id);
 			return (1);
 		}
-		pthread_mutex_lock(&share.check);
-		share.philos[i].last_dine = share.time_init;
-		pthread_mutex_unlock(&share.check);
 	}
 	is_dead(&share);
 	exit_philo(&share, t_id);

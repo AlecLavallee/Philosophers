@@ -6,7 +6,7 @@
 /*   By: alelaval <alelaval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 17:05:21 by alelaval          #+#    #+#             */
-/*   Updated: 2022/04/06 19:45:01 by alelaval         ###   ########.fr       */
+/*   Updated: 2022/04/07 00:53:23 by alelaval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ typedef struct s_share
 	int				time_to_eat;
 	int				nb_philos;
 	int				nb_eat;
-	int				eat_max;
 	int				is_dead;
 	size_t			time_init;
 	t_philo			*philos;
 	pthread_mutex_t	print;
 	pthread_mutex_t	check;
+	pthread_mutex_t	dead;
 }				t_share;
 
 void		exit_philo(t_share *share, pthread_t *t_id);

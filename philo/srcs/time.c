@@ -6,7 +6,7 @@
 /*   By: alelaval <alelaval@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 15:33:58 by alelaval          #+#    #+#             */
-/*   Updated: 2022/04/06 21:07:11 by alelaval         ###   ########.fr       */
+/*   Updated: 2022/04/07 00:12:00 by alelaval         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,17 @@ void	add_sleep(t_share *share, size_t time_to_sleep)
 	size_t	time;
 
 	time = get_time();
-	while (!(share->is_dead))
+	while (1)
 	{
+		pthread_mutex_lock(&share->dead);
+		if (share->is_dead == 1)
+		{
+			pthread_mutex_unlock(&share->dead);
+			return ;
+		}
+		pthread_mutex_unlock(&share->dead);
 		if (get_time() - time >= time_to_sleep)
-			break ;
+			return ;
 		usleep(100);
 	}
 }
